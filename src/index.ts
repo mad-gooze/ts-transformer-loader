@@ -1,15 +1,7 @@
-import { loader } from "webpack";
-import * as ts from "typescript";
-import path from "path";
-import { getOptions } from "loader-utils";
+import { loader } from 'webpack';
+import { processResource } from './processResource';
 
-const printer = ts.createPrinter();
-
-export default function loader(
-    this: loader.LoaderContext,
-    source: string,
-) {
-
+export default function loader(this: loader.LoaderContext, source: string): string | void {
     // Mark the loader as being cacheable since the result should be
     // deterministic.
     this.cacheable && this.cacheable();
@@ -21,7 +13,7 @@ export default function loader(
     const callback = this.async();
 
     try {
-        const newSource = processResource(this);
+        const newSource = processResource(this, source);
 
         if (!callback) return newSource;
         callback(null, newSource);
@@ -33,39 +25,4 @@ export default function loader(
         }
         throw e;
     }
-}
-
-let program: ts.Program | undefined = undefined;
-
-
-function processResource(context: loader.LoaderContext): string {
-    const loaderOptions = getOptions(context) || {};
-    const { getTransformers =() => [] } = loaderOptions;
-
-    const configPath = ts.findConfigFile(
-        process.cwd(),
-        ts.sys.fileExists,
-        'tsconfig.json',
-    );
-
-    if (program === undefined) {
-        const configFile = ts.readConfigFile(configPath, ts.sys.readFile);
-        const tsConfigFile = ts.parseJsonConfigFileContent(
-            configFile.config,
-            ts.sys,
-            path.basename(configPath),
-            {
-                allowJs: true,
-            },
-            configPath,
-        );
-
-        const compilerOptions = tsConfigFile.options;
-        program = ts.createProgram(tsConfigFile.fileNames, compilerOptions);
-    }
-
-    const sourceFile = program.getSourceFile(context.resourcePath);
-
-    const { transformed: [transformed] } = ts.transform(sourceFile, getTransformers(program));
-    return printer.printFile(transformed);
 }
