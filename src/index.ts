@@ -25,7 +25,7 @@ function parseOptions(context: loader.LoaderContext): ParsedOptions {
             throw new Error(`Failed to load getTransformers from "${loaderOptions.getTransformers}": ${err.message}`)
         }
 
-        if (typeof loaderOptions.getTransformers !== "function") {
+        if (typeof getTransformers !== "function") {
             throw new Error(`Custom transformers in "${loaderOptions.getTransformers}" should export a function, got ${typeof getTransformers}`)
         }
     }

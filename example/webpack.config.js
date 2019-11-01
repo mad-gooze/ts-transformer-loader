@@ -30,7 +30,7 @@ var config = {
                             getTransformers: require('./getTransformers'),
                             // pass a string if you are using thread-loader
                             // see https://github.com/s-panferov/awesome-typescript-loader/pull/531/files
-                            // getTransformers: require('./getTransformers'),
+                            // getTransformers: require.resolve('./getTransformers'),
                         },
                     },
                 ],
