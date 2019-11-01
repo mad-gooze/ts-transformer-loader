@@ -3,19 +3,6 @@ var webpack = require('webpack');
 const ts = require('typescript');
 require('ts-node/register');
 
-function numberTransformer() {
-    return context => {
-        const visit = node => {
-            if (ts.isNumericLiteral(node)) {
-                return ts.createStringLiteral(node.text);
-            }
-            return ts.visitEachChild(node, child => visit(child), context);
-        };
-
-        return node => ts.visitNode(node, visit);
-    };
-}
-
 var config = {
     context: __dirname, // Paths are relative to nengo_gui
     // Putting the entry point in a list is a workaround for this error:
@@ -40,9 +27,10 @@ var config = {
                     {
                         loader: require.resolve('../src/index'),
                         options: {
-                            getTransformers(program) {
-                                return [numberTransformer(program)];
-                            },
+                            getTransformers: require('./getTransformers'),
+                            // pass a string if you are using thread-loader
+                            // see https://github.com/s-panferov/awesome-typescript-loader/pull/531/files
+                            // getTransformers: require('./getTransformers'),
                         },
                     },
                 ],
