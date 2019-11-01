@@ -1,13 +1,13 @@
-import { getOptions } from "loader-utils";
+import { getOptions } from 'loader-utils';
 import { loader } from 'webpack';
-import { TsTransformerLoaderOptions } from "./TsTransformerLoaderOptions";
+import { TsTransformerLoaderOptions } from './TsTransformerLoaderOptions';
 import * as ts from 'typescript';
 import path from 'path';
 
 type ParsedOptions = {
     configName: string;
     getTransformers: (program: ts.Program) => ts.TransformerFactory<ts.SourceFile>[];
-}
+};
 
 function parseOptions(context: loader.LoaderContext): ParsedOptions {
     const loaderOptions = (getOptions(context) || {}) as TsTransformerLoaderOptions;
@@ -22,11 +22,15 @@ function parseOptions(context: loader.LoaderContext): ParsedOptions {
         try {
             getTransformers = require(loaderOptions.getTransformers);
         } catch (err) {
-            throw new Error(`Failed to load getTransformers from "${loaderOptions.getTransformers}": ${err.message}`)
+            throw new Error(`Failed to load getTransformers from "${loaderOptions.getTransformers}": ${err.message}`);
         }
 
-        if (typeof getTransformers !== "function") {
-            throw new Error(`Custom transformers in "${loaderOptions.getTransformers}" should export a function, got ${typeof getTransformers}`)
+        if (typeof getTransformers !== 'function') {
+            throw new Error(
+                `Custom transformers in "${
+                    loaderOptions.getTransformers
+                }" should export a function, got ${typeof getTransformers}`,
+            );
         }
     }
 

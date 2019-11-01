@@ -5,4 +5,3 @@ export interface TsTransformerLoaderOptions extends OptionObject {
     configName?: string;
     getTransformers?: (program: ts.Program) => ts.TransformerFactory<ts.SourceFile>[] | string;
 }
-
