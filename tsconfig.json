@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "lib": [
+            "esnext"
+        ],
+        "rootDir": "src",
+        "downlevelIteration": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "declaration": true,
+        "sourceMap": true,
+        "outDir": "dist"
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "exclude": [
+        "**/*.spec.ts",
+        "**/__fixtures__",
+        "**/__mocks__"
+    ]
+}
