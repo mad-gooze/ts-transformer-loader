@@ -12,7 +12,8 @@
   "scripts": {
     "start": "tsc -p ./tsconfig.json -w",
     "build": "tsc -p ./tsconfig.json",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "prepublish": "npm run build"
   },
   "author": "",
   "license": "MIT",
