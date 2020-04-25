@@ -1,5 +1,6 @@
 const ts = require('typescript');
 
+// simple transformer that converts numbers to string literals
 function numberTransformer() {
     return context => {
         const visit = node => {

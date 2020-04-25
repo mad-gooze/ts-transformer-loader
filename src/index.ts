@@ -39,6 +39,10 @@ function parseOptions(context: loader.LoaderContext): ParsedOptions {
 
 let program: ts.Program | undefined = undefined;
 
+/**
+ * Creates ts.Program or returns already created
+ * @param configName - tsconfig filename
+ */
 function createProgram(configName: string): ts.Program {
     const configPath = ts.findConfigFile(process.cwd(), ts.sys.fileExists, configName);
     const configFile = ts.readConfigFile(configPath, ts.sys.readFile);
@@ -56,6 +60,9 @@ function createProgram(configName: string): ts.Program {
     return ts.createProgram(tsConfigFile.fileNames, compilerOptions);
 }
 
+/**
+ * Transforms single resource and applies configured transformers
+ */
 function processResource(context: loader.LoaderContext, source: string): string {
     const { configName, getTransformers } = parseOptions(context);
 
