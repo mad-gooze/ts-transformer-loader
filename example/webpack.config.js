@@ -3,6 +3,12 @@ var webpack = require('webpack');
 const ts = require('typescript');
 require('ts-node/register');
 
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+ 
+const smp = new SpeedMeasurePlugin({
+    granularLoaderData: true,
+});
+
 var config = {
     context: __dirname, // Paths are relative to nengo_gui
     // Putting the entry point in a list is a workaround for this error:
@@ -43,5 +49,5 @@ var config = {
 };
 
 module.exports = env => {
-    return config;
+    return smp.wrap(config);
 };
