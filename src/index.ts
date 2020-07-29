@@ -57,14 +57,7 @@ function createProgram(configName: string): ts.Program {
     );
 
     const compilerOptions = tsConfigFile.options;
-    const defaultCompilerHost = ts.createCompilerHost(compilerOptions);
-    return ts.createProgram(tsConfigFile.fileNames, compilerOptions, {
-        ...defaultCompilerHost,
-        getSourceFile: (fileName, languageVersion, onError, shouldCreateNewSourceFile) => {
-            // return empty file to prevent double reading from disk
-            return undefined;
-        }
-    });
+    return ts.createProgram(tsConfigFile.fileNames, compilerOptions);
 }
 
 /**
@@ -77,7 +70,7 @@ function processResource(context: loader.LoaderContext, source: string): string 
         program = createProgram(configName);
     }
 
-    const sourceFile = ts.createSourceFile(context.resourcePath, source, ts.ScriptTarget.Latest);
+    const sourceFile = program.getSourceFile(context.resourcePath);
     if (!sourceFile) {
         return source;
     }
